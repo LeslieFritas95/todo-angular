@@ -41,8 +41,17 @@ export class ApiService {
     return this.http.put<TodoClass>(url, TodoClass.toDbObj(todo), httpOptions)
   }
 
-  postTodo(todo: TodoClass): void{
+  postTodo(todo: TodoClass): Observable<TodoClass>{
 
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json'
+      })
+    };
+
+    return this.http.post<TodoClass>(this.BASE_URL, TodoClass.toDbObj(todo), httpOptions).pipe(
+      map(todoObj => TodoClass.fromDbObj(todoObj))
+    )
 
   }
 
