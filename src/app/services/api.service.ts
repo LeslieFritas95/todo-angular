@@ -1,6 +1,6 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { map } from 'rxjs';
+import { map, Observable } from 'rxjs';
 import { TodoClass, TodoPriority } from '../model/todo-class';
 
 
@@ -9,15 +9,41 @@ import { TodoClass, TodoPriority } from '../model/todo-class';
 })
 export class ApiService {
 
+  private readonly BASE_URL = 'https://628b2f12667aea3a3e290de6.mockapi.io/todos'
+
   constructor(private http: HttpClient) {
   }
 
   getTodosFromDb(){
-    const url = 'https://628b2f12667aea3a3e290de6.mockapi.io/todos';
-    return this.http.get<TodoClass[]>(url).pipe(
+    return this.http.get<TodoClass[]>(this.BASE_URL).pipe(
       map(dbObjects => this.convertToTodoClass(dbObjects)),
       // map(todos => this.makeVeryHigh(todos))
     );
+  }
+
+  deleteTodo(id: string): Observable<any>{
+
+    const url = this.BASE_URL + '/' + id;
+
+    return this.http.delete<any>(url)
+  }
+
+  putTodo(todo: TodoClass): Observable<TodoClass>{
+
+    const url = this.BASE_URL + '/' + todo.id;
+
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json'
+      })
+    };
+
+    return this.http.put<TodoClass>(url, TodoClass.toDbObj(todo), httpOptions)
+  }
+
+  postTodo(todo: TodoClass): void{
+
+
   }
 
   // makeVeryHigh(todos: TodoClass[]){

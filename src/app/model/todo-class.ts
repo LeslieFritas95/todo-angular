@@ -36,8 +36,8 @@ export class TodoClass {
 
   done(): void{
     const now = new Date();
-    this.priority = TodoPriority.DONE;
     this._doneDate = now.getTime();
+    this.priority = TodoPriority.DONE;
   }
 
   static compareByName(a: TodoClass, b:TodoClass){
@@ -62,6 +62,16 @@ export class TodoClass {
   }
 
 
+  static toDbObj(todo: TodoClass): any {
+    const dbObject:any = {};
+    dbObject.id = todo.id;
+    dbObject.name = todo.name;
+    dbObject.tags = todo.tags;
+    dbObject.priority = todo.priority;
+    dbObject.creationDate = todo._creationDate;
+    dbObject.doneDate = todo._doneDate;
+    return dbObject;
+  }
 }
 
 export enum TodoPriority {
