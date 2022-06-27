@@ -4,7 +4,7 @@ import { map, Observable } from 'rxjs';
 import { TodoClass, TodoPriority } from '../model/todo-class';
 
 
-@Injectable({
+@Injectable({   
   providedIn: 'root'
 })
 export class ApiService {
